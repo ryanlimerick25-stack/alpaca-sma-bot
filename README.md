@@ -4,6 +4,9 @@ A plug-in backtesting and paper-trading framework built to answer one
 question rigorously: **does a strategy actually work, or does its backtest
 just say so?**
 
+![Strategy vs buy-and-hold: equity and drawdown](docs/equity_curve.png)
+
+
 Most trading bot repos promise profits. This one ships two well-known
 strategies, shows they lose, and explains exactly why. The product is the
 validation machinery — plug in your own strategy and get an honest verdict
