@@ -64,14 +64,20 @@ class BacktestEngine:
             "n_trades": n_trades,
         }
 
-    def run_grid(self, strategy, symbols, years=3, verbose=True):
-        """Run strategy across every symbol and each of the last N one-year
-        periods. Returns list of result dicts; prints a report if verbose."""
+    def run_grid(self, strategy, symbols, n_periods=3, window_years=1, verbose=True):
+        """Run strategy across every symbol and each of the last n_periods
+        non-overlapping windows of window_years each.
+
+        Match window_years to the strategy's timescale: a 10/30 SMA gets a
+        fair verdict in 1-year windows; a 50/200 needs ~200 trading days
+        just to produce its first signal, so it needs 3-5 year windows.
+        Returns list of result dicts; prints a report if verbose."""
         now = datetime.now()
         periods = []
-        for back in range(years, 0, -1):
-            start = now - timedelta(days=365 * back)
-            end = start + timedelta(days=365)
+        window = timedelta(days=365 * window_years)
+        for back in range(n_periods, 0, -1):
+            start = now - window * back
+            end = start + window
             periods.append((start, end, f"{start.year}-{end.year}"))
 
         results = []
